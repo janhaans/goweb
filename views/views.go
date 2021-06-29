@@ -8,8 +8,11 @@ type View struct {
 }
 
 func NewView(layout string, filenames ...string) *View {
-	filenames = append(filenames, "views/layouts/footer.gohtml", "views/layouts/bootstrap.gohtml")
 	t, err := template.ParseFiles(filenames...)
+	if err != nil {
+		panic(err)
+	}
+	t, err = t.ParseGlob("views/layouts/*.gohtml")
 	if err != nil {
 		panic(err)
 	}
