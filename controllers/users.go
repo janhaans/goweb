@@ -24,5 +24,9 @@ func (u *Users) New(w http.ResponseWriter, r *http.Request) {
 }
 
 func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "This is a temporary response")
+	if err := r.ParseForm(); err != nil {
+		panic(err)
+	}
+	fmt.Fprintf(w, "Email = %s\n", r.PostForm["email"])
+	fmt.Fprintf(w, "Password = %s\n", r.PostForm["password"])
 }
