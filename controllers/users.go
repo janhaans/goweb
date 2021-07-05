@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/gorilla/schema"
 	"github.com/janhaans/goweb/views"
 )
 
@@ -30,15 +29,10 @@ func (u *Users) New(w http.ResponseWriter, r *http.Request) {
 }
 
 func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
-	if err := r.ParseForm(); err != nil {
+	var form SignUpForm
+	if err := parseFunc(r, &form); err != nil {
 		panic(err)
 	}
-
-	decoder := schema.NewDecoder()
-	form := SignUpForm{}
-	if err := decoder.Decode(&form, r.PostForm); err != nil {
-		panic(err)
-	}
-
-	fmt.Fprint(w, form)
+	fmt.Fprintf(w, "Email = %s\n", form.Email)
+	fmt.Fprintf(w, "Password = %s\n", form.Password)
 }
