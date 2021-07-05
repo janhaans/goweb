@@ -19,6 +19,13 @@ func (v *View) Render(w http.ResponseWriter, data interface{}) error {
 	return v.Template.ExecuteTemplate(w, v.Layout, data)
 }
 
+func (v *View) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	if err := v.Render(w, nil); err != nil {
+		panic(err)
+	}
+}
+
 func NewView(layout string, filenames ...string) *View {
 	t, err := template.ParseFiles(filenames...)
 	if err != nil {
